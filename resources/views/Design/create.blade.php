@@ -26,10 +26,6 @@
                     Add Image From Computer
                     </label>
 
-                    <button type="button" class="btn btn-outline-primary btn-lg btn-block " id="uploadURL">Add Image
-                        From URL
-                    </button>
-
                     <button type="button" class="btn btn-outline-primary btn-lg btn-block " id="addText">Add
                         Text
                     </button>
@@ -55,15 +51,16 @@
                 </div>
                 <div class="col">
                     <div class="shirt-box bg-white d-inline-flex">
-                        <img class="shirt-image" src="{{asset('/images/shirt_template.png')}}" alt="asfd" >
+                        <img class="shirt-image" src="{{asset('/images/shirt_template.png')}}"   >
                         <div id="canvas-wrapper">
                             <canvas id="design-canvas"> please use different browser </canvas>
-                            <img id="canvasImg" class="d-none" alt="Right click to save me!">
                         </div>
 
                     </div>
                 </div>
-                <input type="textarea" name ="design_image" id="design_image" class="d-none"> </div>
+                <input type="textarea" name ="design_image" id="design_image" class="d-none">
+                <input type="textarea" name ="design_svg" id="design_svg" class="d-none">
+                <input type="textarea" name ="design_json" id="design_json" class="d-none">
             </div>
         </form>
     </div>
@@ -113,40 +110,6 @@
 
         canvas = new fabric.Canvas('design-canvas');
 
-        // add image from url
-        $("#uploadURL").click(function () {
-
-            var URL = prompt("Insert image URL");
-            var imgObj = new Image();
-            imgObj.src = URL;
-            imgObj.onload = function () {
-                image = new fabric.Image.fromURL(imgObj);
-
-                let scale = 0
-
-                if (image.length > image.width) {
-                    scale = canvas.length / (1.2 * image.length);
-
-                } else {
-                    scale = canvas.width / (1.2 * image.width);
-                }
-
-                image.set({
-                    scaleX: scale,
-                    scaleY: scale
-                });
-                canvas.centerObject(image);
-                canvas.add(image);
-                canvas.renderAll();
-            }
-
-        });
-
-        $('#saveDesign').click(function () {
-            $('#customDesign').get(0).toBlob(function (blob) {
-                saveAs(blob, "design.png")
-            });
-        });
 
         document.getElementById('imgLoader').onchange = function handleImage(e) {
             var reader = new FileReader();
@@ -201,8 +164,15 @@
 
         function submitDesign(){
             let dataURL = canvas.toDataURL("image/png",1.0);
-
             $('#design_image').val(dataURL);
+
+            let svgData = canvas.toSVG();
+            $('#design_svg').val(svgData);
+
+            let jsonData = JSON.stringify(canvas.toJSON());
+
+            console.log(jsonData);
+            $('#design_json').val(jsonData);
 
             $('form').submit();
         }

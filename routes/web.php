@@ -15,8 +15,16 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/', 'DesignController@home')->name('home');
 
+
+Route::get('/designs', 'DesignController@index')->name('designs.index');
 Route::get('/designs/create', 'DesignController@create')->name('designs.create');
-
 Route::post('/designs', 'DesignController@store')->name('designs.store');
+
+Route::get('/designs/{design}', 'DesignController@show')->name('designs.show');
+
+Route::get('/designs/{design}/edit', 'DesignController@edit')->name('designs.edit');
+Route::put('/designs/{design}', 'DesignController@update')->name('designs.update');
+
+Route::delete('/designs/{design}', 'DesignController@destroy')->name('designs.destroy');

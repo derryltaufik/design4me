@@ -23,7 +23,8 @@ class CreateDesignsTable extends Migration
             $table->string('title');
             $table->string('description');
             $table->string('design_image');
-            $table->stirng('design_vector');
+            $table->string('design_svg');
+            $table->string('design_json');
             $table->string('visibility');
             $table->timestamps();
         });
