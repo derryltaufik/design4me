@@ -37,8 +37,8 @@
                     <label for="visibility"> Visibility </label>
                     <select name="visibility" class="custom-select">
 
-                        <option selected value ='Private'>Private</option>
-                        <option value="Public">Public</option>
+                        <option selected value ='private'>Private</option>
+                        <option value="public">Public</option>
                     </select>
 
                     <br>

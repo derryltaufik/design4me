@@ -14,6 +14,14 @@ class DesignController extends Controller
     }
 
     public function store(Request $request){
+
+        $inputs = $request->validate([
+            'title'=>['required','min:3', 'max:255'],
+            'description'=>['required'],
+            'visibility'=> Rule::in(['public','private'])
+        ]);
+
+        // saving the image
         $design_image = $request->design_image;
         $design_image = str_replace('data:image/png;base64,','',$design_image);
         $design_image = str_replace(' ,','+',$design_image);
@@ -24,6 +32,15 @@ class DesignController extends Controller
             imagedestroy($design_file_image_raw);
             $design_file_image_name = Storage::disk('public')->putFile('images', new File('images/temp.png') );
         }
+
+        $inputs['design_image'] = $design_file_image_name;
+
+        // saving the vector -> to make the design editable
+
+
+    }
+
+    public function save_image(String $image_raw){
 
     }
 }

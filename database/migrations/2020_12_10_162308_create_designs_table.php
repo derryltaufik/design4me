@@ -20,9 +20,10 @@ class CreateDesignsTable extends Migration
                 ->constrained()
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
-            $table->string('front_image');
             $table->string('title');
             $table->string('description');
+            $table->string('design_image');
+            $table->stirng('design_vector');
             $table->string('visibility');
             $table->timestamps();
         });
