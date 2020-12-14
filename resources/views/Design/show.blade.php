@@ -9,13 +9,9 @@
 
         <div class="row">
             <div class="col">
-                <div class="shirt-box bg-white d-inline-flex">
-                    <img class="shirt-image" src="{{asset('/images/shirt_template.png')}}"   >
-                    <div class="design-image-wrapper">
-                        <img class="design-image" src="{{asset('storage/'.$design->design_svg)}}">
-                    </div>
+                <x-design-shirt :design="$design">
 
-                </div>
+                </x-design-shirt>
             </div>
 
             <div class="col">
@@ -37,7 +33,7 @@
                     <div class="col">
                         <form method= "get" action="{{route('designs.edit', $design)}}">
                             @csrf
-                            <button type="submit" class="btn btn-primary btn-lg btn-block">Edit
+                            <button type="submit" class="btn btn-outline-primary btn-lg btn-block">Edit
                                 Design
                             </button>
                         </form>
@@ -46,12 +42,39 @@
                         <form method= "post" action="{{route('designs.destroy', $design)}}">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-lg btn-block">Delete
+                            <button type="submit" class="btn btn-outline-danger btn-lg btn-block">Delete
                                 Design
                             </button>
                         </form>
                     </div>
                 </div>
+
+                <div class="row">
+                    <div class = "col">
+                        <p> <h2> Add To Cart </h2> </p>
+                    </div>
+                </div>
+
+                <form method= "post" action="{{route('carts.atc', $design)}}">
+                    @csrf
+                    <div class="row my-2">
+                        <div class="col">
+                            <label for="quantity"> Quantity</label>
+                            <input class="w-100" type="number" name="quantity" min="1" value="1">
+                        </div>
+
+
+                    </div>
+                    <div class="row">
+                        <div class="col">
+
+                            <button type="submit" class="btn btn-primary btn-lg btn-block">Add To Cart
+                            </button>
+
+                        </div>
+                    </div>
+
+                </form>
 
             </div>
 
@@ -62,35 +85,4 @@
 
     </div>
 
-@endsection
-
-@section('styles')
-    <style>
-        .shirt-box{
-            position:relative;
-        }
-
-        .design-image-wrapper{
-
-            position: absolute;
-            top:50%;
-            left:50%;
-            transform: translate(-50%, -70%);
-            width: 35%;
-        }
-
-        .design-image{
-            z-index: 1;
-        }
-
-        .shirt-image {
-            max-width: 100%;
-            max-height: 100%;
-        }
-    </style>
-@endsection
-@section('scripts')
-    <script>
-
-    </script>
 @endsection

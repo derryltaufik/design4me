@@ -28,3 +28,11 @@ Route::get('/designs/{design}/edit', 'DesignController@edit')->name('designs.edi
 Route::put('/designs/{design}', 'DesignController@update')->name('designs.update');
 
 Route::delete('/designs/{design}', 'DesignController@destroy')->name('designs.destroy');
+
+Route::get('/carts/', 'CartController@index')->name('carts.index');
+Route::post('/carts/{design}', 'CartController@addToCart')->name('carts.atc');
+Route::put('/carts/{design}', 'CartController@update')->name('carts.update');
+
+Route::get('/transactions', 'TransactionController@index')->name('transactions.index');
+Route::post('/transactions', 'TransactionController@create')->name('transactions.create');
+Route::get('/transactions/{transaction}', 'TransactionController@show')->name('transactions.show');

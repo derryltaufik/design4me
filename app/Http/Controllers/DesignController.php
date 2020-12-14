@@ -23,7 +23,7 @@ class DesignController extends Controller
         $userId = Auth::user()->id;
 
         $designs = Design::where('user_id','=',$userId)
-            ->orderBy('created_at','DESC')
+            ->orderBy('updated_at','DESC')
             ->get();
 
         return view('design.index', compact('designs'));
