@@ -6,6 +6,7 @@ use App\Cart;
 use App\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class TransactionController extends Controller
 {
@@ -32,6 +33,7 @@ class TransactionController extends Controller
             $transaction->transactionDetails()->create(["design_id"=>$cart->design_id, "quantity" => $cart->quantity]);
             $cart->delete();
         }
+
         return redirect()->route("transactions.show", $transaction);
     }
 

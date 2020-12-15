@@ -90,6 +90,9 @@
         </nav>
 
         <main class="py-5">
+            <div class="container">
+                <x-alert></x-alert>
+            </div>
             @yield('content')
         </main>
     </div>

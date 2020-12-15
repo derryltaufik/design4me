@@ -7,6 +7,7 @@ use App\Design;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class CartController extends Controller
 {
@@ -33,6 +34,8 @@ class CartController extends Controller
             $id = Auth::user()->carts()->create($inputs)->id;
         }
 
+        Session::flash('success','Product Added to Cart Successfully');
+
         return redirect()->back();
     }
 
@@ -44,6 +47,8 @@ class CartController extends Controller
         //if cart exist
         $cart->quantity = $request->quantity;
         $cart->update();
+
+        Session::flash('success','Cart Successfully Updated');
 
         return redirect()->back();
     }

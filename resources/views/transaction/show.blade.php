@@ -3,6 +3,8 @@
 @section('content')
 
     <div class="container">
+        <h1> Pay your transaction before <b> {{$transaction->created_at->addDays(1)->format('l, j F Y, H:i')}} </b> </h1>
+        <br>
         <h1> Total Price : <b> Rp{{number_format($transaction->total*50000,0,',','.')}} </b></h1>
         <h2> Instructions </h2>
         <ol>

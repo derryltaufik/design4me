@@ -6,6 +6,7 @@ use App\Design;
 use Illuminate\Http\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
@@ -14,7 +15,9 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 class DesignController extends Controller
 {
     public function home(){
-        $designs = Design::where('visibility','=','public')->get();
+        $designs = Design::where('visibility','=','public')
+            ->orderBy('updated_at','DESC')
+            ->get();
 
         return view('home',compact('designs'));
     }
@@ -73,11 +76,15 @@ class DesignController extends Controller
 
         $id = Auth::user()->designs()->create($inputs)->id;
 
+        Session::flash('success','Design Created Successfully');
+
         return redirect()->route('designs.show',$id);
 
     }
 
     public function show(Design $design){
+
+        Session::flash('info','<h1> All T-shirt Costs ONLY Rp50.000! </h1>');
 
         return view('design.show', compact('design'));
 
@@ -139,10 +146,13 @@ class DesignController extends Controller
 
         $design->title = $inputs['title'];
         $design->description = $inputs['description'];
+        $design->visibility = $inputs['visibility'];
         $design->design_image = $inputs['design_image'];
         $design->design_svg = $inputs['design_svg'];
         $design->design_json = $inputs['design_json'];
         $design->update();
+
+        Session::flash('success','Design Updated Successfully');
 
         return redirect()->route('designs.show', $design);
 
@@ -155,6 +165,8 @@ class DesignController extends Controller
         Storage::disk('public')->delete($design->design_image);
 
         $design->delete();
+
+        Session::flash('success','Design Deleted Successfully');
 
         return redirect()->route('designs.index');
 

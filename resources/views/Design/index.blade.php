@@ -8,6 +8,14 @@
             </div>
         </div>
 
+        <div class="row my-3">
+            <div class="col text-center">
+                <a href="{{route('designs.create')}}" class="btn btn-primary w-50 rounded-pill">
+                    <h4> Create New Design </h4>
+                </a>
+            </div>
+        </div>
+
         <div class="row align-content-center">
             @foreach($designs as $design)
                 <div class="card m-3" style="width: 19.5rem;">
