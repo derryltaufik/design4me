@@ -15,23 +15,28 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::get('/', 'DesignController@home')->name('home');
+Route::get('/', 'ProductController@home')->name('home');
+
+Route::get('/productTypes', 'ProductTypeController@index')->name('productTypes.index');
+Route::get('/products/{product}', 'productController@show')->name('products.show');
 
 Route::middleware('auth')->group(function(){
-    Route::get('/designs', 'DesignController@index')->name('designs.index');
-    Route::get('/designs/create', 'DesignController@create')->name('designs.create');
-    Route::post('/designs', 'DesignController@store')->name('designs.store');
 
-    Route::get('/designs/{design}', 'DesignController@show')->name('designs.show');
 
-    Route::get('/designs/{design}/edit', 'DesignController@edit')->name('designs.edit');
-    Route::put('/designs/{design}', 'DesignController@update')->name('designs.update');
+    Route::get('/products', 'productController@index')->name('products.index');
+    Route::get('/products/create/{productType}', 'productController@create')->name('products.create');
+    Route::post('/products/{productType}', 'productController@store')->name('products.store');
 
-    Route::delete('/designs/{design}', 'DesignController@destroy')->name('designs.destroy');
+    Route::get('/products/{product}/edit', 'productController@edit')->name('products.edit');
+    Route::put('/products/{product}', 'productController@update')->name('products.update');
+
+    Route::delete('/products/{product}', 'productController@destroy')->name('products.destroy');
 
     Route::get('/carts/', 'CartController@index')->name('carts.index');
-    Route::post('/carts/{design}', 'CartController@addToCart')->name('carts.atc');
-    Route::put('/carts/{design}', 'CartController@update')->name('carts.update');
+    Route::post('/carts/{product}', 'CartController@addToCart')->name('carts.atc');
+    Route::put('/carts/{product}', 'CartController@update')->name('carts.update');
+
+    Route::delete('/carts/{product}', 'CartController@destroy')->name('carts.destroy');
 
     Route::get('/transactions', 'TransactionController@index')->name('transactions.index');
     Route::post('/transactions', 'TransactionController@create')->name('transactions.create');

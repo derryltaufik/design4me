@@ -21,7 +21,7 @@
                     <tr>
                         <th scope="row">{{$loop->index+1}}</th>
                         <td>{{$transaction->created_at}}, {{$transaction->created_at->diffForHumans()}}</td>
-                        <td>Rp{{number_format($transaction->total*50000,0,',','.')}}</td>
+                        <td><b>Rp{{number_format($transaction->total,0,',','.')}} </b></td>
                         <td> {{$transaction->status }}</td>
                         <td>
                             <a href="{{route('transactions.show', $transaction)}}">

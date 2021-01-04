@@ -1,5 +1,5 @@
 <div class="shirt-box bg-white d-inline-flex">
-    <img class="shirt-image" src="{{asset('/images/shirt_template.png')}}"   >
+    <img class="shirt-image" src="{{asset($productType->image)}}"   >
     <div id="canvas-wrapper">
         <canvas id="design-canvas"> please use different browser </canvas>
     </div>
@@ -19,7 +19,7 @@
         position: absolute;
         top:50%;
         left:50%;
-        transform: translate(-50%, -70%);
+        transform: translate(-50%, -45%);
         width: 35%;
     }
 
@@ -38,22 +38,27 @@
 
 <script>
     let canvas;
-    $().ready( function(){
-// resize the canvas to A4 size ratio
-        let canvasWidth = $('#canvas-wrapper').width();
-        $('#canvas-wrapper').height(canvasWidth * 1.4142);
-        let canvasHeight =  $('#canvas-wrapper').height();
+    $(document).ready( function(){
 
-        canvas = document.getElementById('design-canvas');
-        canvas.width  = canvasWidth;
-        canvas.height = canvasHeight;
+        $(".shirt-image").on("load", imageLoaded); //wait until the T-shirt image is loaded
 
-        // creating fabric canvas
+        function imageLoaded() {
+            // resize the canvas to A4 size ratio
+            let canvasWidth = $('#canvas-wrapper').width();
+            $('#canvas-wrapper').height(canvasWidth * 1.4142);
+            let canvasHeight =  $('#canvas-wrapper').height();
 
-        canvas = new fabric.Canvas('design-canvas');
+            canvas = document.getElementById('design-canvas');
+            canvas.width  = canvasWidth;
+            canvas.height = canvasHeight;
+
+            // creating fabric canvas
+            canvas = new fabric.Canvas('design-canvas');
+        }
 
         // inserting saved design
         @if( $design )
+
         fabric.loadSVGFromURL('{{asset('storage/'.$design->design_svg)}}', function(objects, options) {
             let obj = fabric.util.groupSVGElements(objects, options);
             canvas.add(obj).renderAll();
@@ -64,7 +69,6 @@
             canvas.renderAll();
         }
         @endif
-
     });
 
     document.getElementById('imgLoader').onchange = function handleImage(e) {

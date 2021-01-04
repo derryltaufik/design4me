@@ -58,7 +58,7 @@
                             @endif
                         @else
                             <li class="nav-item">
-                                <a class="nav-link text-light" href="{{ route('designs.index') }}">{{ __('My Designs') }}</a>
+                                <a class="nav-link text-light" href="{{ route('products.index') }}">{{ __('My Designs') }}</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-light" href="{{ route('carts.index') }}"> <span class="fas fa-shopping-cart"></span> My Cart</a>

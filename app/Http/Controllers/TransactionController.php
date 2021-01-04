@@ -20,17 +20,18 @@ class TransactionController extends Controller
 
     public function show(Transaction $transaction){
 
+        $this->authorize('view',$transaction);
+
         return view('transaction.show',compact('transaction') );
     }
 
     public function create(){
         $transaction = Auth::user()->transactions()->create(["status"=>"unpaid"]);
 
-//        dd(transaction);$
 
         $carts = Auth::user()->carts;
         foreach ($carts as $cart){
-            $transaction->transactionDetails()->create(["design_id"=>$cart->design_id, "quantity" => $cart->quantity]);
+            $transaction->transactionDetails()->create(["product_id"=>$cart->product_id, "quantity" => $cart->quantity]);
             $cart->delete();
         }
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Cart;
 use App\Design;
+use App\Product;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,11 +17,10 @@ class CartController extends Controller
         return view('cart.index',compact('carts'));
     }
 
-    public function addToCart(Request $request, Design $design){
-//        dd($request, Auth::user(), $design);
+    public function addToCart(Request $request, Product $product){
 
         $cart = Cart::where('user_id','=',Auth::user()->id)
-            ->where('design_id','=', $design->id)
+            ->where('product_id','=', $product->id)
             ->first();
         //if cart exist
         if($cart){
@@ -28,7 +28,7 @@ class CartController extends Controller
             $cart->update();
         }else{
             $inputs = [];
-            $inputs['design_id'] = $design->id;
+            $inputs['product_id'] = $product->id;
             $inputs['quantity'] = $request->quantity;
 
             $id = Auth::user()->carts()->create($inputs)->id;
@@ -39,17 +39,39 @@ class CartController extends Controller
         return redirect()->back();
     }
 
-    public function update(Request $request, Design $design){
+    public function update(Request $request, Product $product){
 
         $cart = Cart::where('user_id','=',Auth::user()->id)
-            ->where('design_id','=', $design->id)
+            ->where('product_id','=', $product->id)
             ->first();
         //if cart exist
+        $this->authorize('update',$cart);
+
         $cart->quantity = $request->quantity;
         $cart->update();
 
         Session::flash('success','Cart Successfully Updated');
 
         return redirect()->back();
+    }
+
+    public function destroy(Request $request, Product $product){
+
+
+
+
+        $cart = Cart::where('user_id','=',Auth::user()->id)
+            ->where('product_id','=', $product->id)
+            ->first();
+
+        $this->authorize('delete',$cart);
+
+        //if cart exist
+        $cart->delete();
+
+        Session::flash('success','Product Removed From The Cart');
+
+        return redirect()->back();
+
     }
 }

@@ -10,40 +10,10 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class DesignController extends Controller
 {
-    public function home(){
-        $designs = Design::where('visibility','=','public')
-            ->orderBy('updated_at','DESC')
-            ->get();
-
-        return view('home',compact('designs'));
-    }
-
-    public function index(){
-        $userId = Auth::user()->id;
-
-        $designs = Design::where('user_id','=',$userId)
-            ->orderBy('updated_at','DESC')
-            ->get();
-
-        return view('design.index', compact('designs'));
-    }
-
-
-    public function create(){
-        return view('design.create');
-    }
-
-    public function store(Request $request){
-
-        $inputs = $request->validate([
-            'title'=>['required','min:3', 'max:255'],
-            'description'=>['required'],
-            'visibility'=> Rule::in(['public','private'])
-        ]);
+    public function store(Request $request, String $name, String $description, String $commission){
 
         // saving the image
         $design_image = $request->design_image;
@@ -57,54 +27,38 @@ class DesignController extends Controller
             $design_file_image_name = Storage::disk('public')->putFile('images', new File('images/temp.png') );
         }
 
-        $inputs['design_image'] = $design_file_image_name;
+
 
         // saving the vector (svg)
         $design_svg = $request->design_svg;
         file_put_contents('svg/temp.svg', $design_svg);
         $design_file_svg_name = Storage::disk('public')->putFile('svg', new File('svg/temp.svg') );
-        $inputs['design_svg'] = $design_file_svg_name;
+
 
 
         // saving the json -> to make the design editable
         $design_json = $request->design_json;
         file_put_contents('json/temp.json', $design_json);
-        $filename = Str::random(40).'.json';
-        Storage::disk('public')->putFileAs('json', new File('json/temp.json'), $filename);
-        $inputs['design_json'] = $filename;
+        $design_file_json_name = Str::random(40).'.json';
+        Storage::disk('public')->putFileAs('json', new File('json/temp.json'), $design_file_json_name);
+        $design_file_json_name = 'json/'. $design_file_json_name;
 
+        $inputs = array();
 
-        $id = Auth::user()->designs()->create($inputs)->id;
+        $inputs['name'] = $name;
+        $inputs['description'] = $description;
+        $inputs['commission'] = $commission;
+        $inputs['design_image'] = $design_file_image_name;
+        $inputs['design_svg'] = $design_file_svg_name;
+        $inputs['design_json'] = $design_file_json_name;
 
-        Session::flash('success','Design Created Successfully');
+        $id = Design::create($inputs);
 
-        return redirect()->route('designs.show',$id);
-
-    }
-
-    public function show(Design $design){
-
-        Session::flash('info','<h1> All T-shirt Costs ONLY Rp50.000! </h1>');
-
-        return view('design.show', compact('design'));
+        return $id;
 
     }
 
-
-    public function edit(Design $design){
-
-        return view('design.edit', compact('design'));
-
-    }
-
-
-    public function update(Design $design, Request $request){
-
-        $inputs = $request->validate([
-            'title'=>['required','min:3', 'max:255'],
-            'description'=>['required'],
-            'visibility'=> Rule::in(['public','private'])
-        ]);
+    public function update(Request $request, Design $design, String $name, String $description, String $commission){
 
         // saving the image
         $design_image = $request->design_image;
@@ -117,44 +71,32 @@ class DesignController extends Controller
             imagedestroy($design_file_image_raw);
             $design_file_image_name = Storage::disk('public')->putFile('images', new File('images/temp.png') );
         }
-        $inputs['design_image'] = $design_file_image_name;
 
-        //deleting old image
-        Storage::disk('public')->delete($design->design_image);
-
-        // saving the vector (svg) -> to make the design editable
+        // saving the vector (svg)
         $design_svg = $request->design_svg;
         file_put_contents('svg/temp.svg', $design_svg);
         $design_file_svg_name = Storage::disk('public')->putFile('svg', new File('svg/temp.svg') );
 
-        $inputs['design_svg'] = $design_file_svg_name;
-
-        //deleting old vector
-        Storage::disk('public')->delete($design->design_svg);
-
-        //saving the json
+        // saving the json -> to make the design editable
         $design_json = $request->design_json;
         file_put_contents('json/temp.json', $design_json);
-        $filename = Str::random(40).'.json';
-        Storage::disk('public')->putFileAs('json', new File('json/temp.json'), $filename);
-        $filename = 'json/'.$filename;
+        $design_file_json_name = Str::random(40).'.json';
+        Storage::disk('public')->putFileAs('json', new File('json/temp.json'), $design_file_json_name);
+        $design_file_json_name = 'json/'. $design_file_json_name;
 
-        $inputs['design_json'] = $filename;
-
-        //deleting old json
+        Storage::disk('public')->delete($design->design_image);
+        Storage::disk('public')->delete($design->design_svg);
         Storage::disk('public')->delete($design->design_json);
 
-        $design->title = $inputs['title'];
-        $design->description = $inputs['description'];
-        $design->visibility = $inputs['visibility'];
-        $design->design_image = $inputs['design_image'];
-        $design->design_svg = $inputs['design_svg'];
-        $design->design_json = $inputs['design_json'];
+        $design->name = $name;
+        $design->description = $description;
+        $design->commission = $commission;
+        $design->design_image = $design_file_image_name;
+        $design->design_svg = $design_file_svg_name;
+        $design->design_json = $design_file_json_name;
         $design->update();
 
-        Session::flash('success','Design Updated Successfully');
-
-        return redirect()->route('designs.show', $design);
+        return true;
 
     }
 
@@ -166,9 +108,7 @@ class DesignController extends Controller
 
         $design->delete();
 
-        Session::flash('success','Design Deleted Successfully');
-
-        return redirect()->route('designs.index');
+        return true;
 
     }
 }

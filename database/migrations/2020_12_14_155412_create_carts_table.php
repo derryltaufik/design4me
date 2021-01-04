@@ -20,7 +20,7 @@ class CreateCartsTable extends Migration
                 ->constrained()
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
-            $table->foreignId('design_id')
+            $table->foreignId('product_id')
                 ->nullable()
                 ->constrained()
                 ->cascadeOnUpdate()

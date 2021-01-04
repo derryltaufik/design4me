@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\=Design;
+use App\Product;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class DesignPolicy
+class ProductPolicy
 {
     use HandlesAuthorization;
 
@@ -25,12 +25,12 @@ class DesignPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\User  $user
-     * @param  \App\=Design  $=Design
+     * @param  \App\Product  $product
      * @return mixed
      */
-    public function view(User $user, =Design $=Design)
+    public function view(User $user, Product $product)
     {
-        //
+        return $user->id === $product->user_id;
     }
 
     /**
@@ -48,34 +48,34 @@ class DesignPolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\User  $user
-     * @param  \App\=Design  $=Design
+     * @param  \App\Product  $product
      * @return mixed
      */
-    public function update(User $user, =Design $=Design)
+    public function update(User $user, Product $product)
     {
-        //
+        return $user->id === $product->user_id;
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\User  $user
-     * @param  \App\=Design  $=Design
+     * @param  \App\Product  $product
      * @return mixed
      */
-    public function delete(User $user, =Design $=Design)
+    public function delete(User $user, Product $product)
     {
-        //
+        return $user->id === $product->user_id;
     }
 
     /**
      * Determine whether the user can restore the model.
      *
      * @param  \App\User  $user
-     * @param  \App\=Design  $=Design
+     * @param  \App\Product  $product
      * @return mixed
      */
-    public function restore(User $user, =Design $=Design)
+    public function restore(User $user, Product $product)
     {
         //
     }
@@ -84,10 +84,10 @@ class DesignPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\User  $user
-     * @param  \App\=Design  $=Design
+     * @param  \App\Product  $product
      * @return mixed
      */
-    public function forceDelete(User $user, =Design $=Design)
+    public function forceDelete(User $user, Product $product)
     {
         //
     }

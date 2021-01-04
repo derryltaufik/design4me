@@ -1,57 +1,50 @@
 @extends('layouts.app')
 
 @section('content')
-    <x-home-jumbotron>
-
-    </x-home-jumbotron>
-
     <div class="container col-11">
         <div class="row">
             <div class="col">
-                <h1 class="text-center"> Publicly Available Designs </h1>
+                <h1 class="text-center"> Choose Apparel Type</h1>
             </div>
         </div>
 
         <div class="row align-content-center">
 
-            @foreach($products as $product)
+
+            @foreach($productTypes as $productType)
                 @if($loop->index %4 == 0)
                     <div class="card-deck">
                         @endif
+
                         @php
-                            $design = $product->design;
-                            $productType = $product->productType;
+                            $design = null;
                         @endphp
 
                         <div class="card shadow m-3" style="width: 19.5rem;">
-                            <h2 class="py-4 card-title text-center">{{$design->name}}</h2>
+                            <h2 class="py-4 card-title text-center">{{$productType->name}}</h2>
 
                             <x-design-shirt :design="$design" :productType="$productType">
 
                             </x-design-shirt>
 
                             <div class="card-body">
-                                <p class="card-text">{{$design->description}}</p>
-
+                                <p class="card-text">{{$productType->description}}</p>
+                                <p class="card-text">Base Price:
+                                    Rp{{number_format($productType->base_price,0,',','.')}}</p>
                             </div>
                             <div class="card-footer">
-                                <a href="{{route('products.show',$product)}}" class="btn btn-primary btn-block">View
+                                <a href="{{route('products.create',$productType)}}" class="btn btn-primary btn-block">Create
                                     Design</a>
                             </div>
                         </div>
-
                         @if($loop->index %4 == 0)
                     </div>
                 @endif
             @endforeach
+
         </div>
 
     </div>
 
 @endsection
-@section('scripts')
-    <script>
-        $('main').removeClass("py-5");
-    </script>
 
-@endsection

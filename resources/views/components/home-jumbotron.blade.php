@@ -6,33 +6,25 @@
 
     <div class="container text-white">
 
-        <h1 class="display-4">Design4Me <br> Create your own design for just Rp50.000 </h1>
-        <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+        <h1 class="display-2"> <b> Design4Me </b>  </h1>
+        <h1 class="display-4"> Buy your own customized T-shirt, starting from Rp50.000 </h1>
+
         <hr class="my-4">
-        <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
-        <a class="btn btn-outline-light btn-lg" href="{{route("designs.create")}}" role="button">Create Design</a>
+
+        <a class="btn btn-outline-light btn-lg" href="{{route('productTypes.index')}}" role="button">Create Design</a>
 
     </div>
     <!-- /.container -->
 
 
 </div>
-<!-- /.jumbotron -->
-
-<!--
-For IE support of object-fit add this to your document
-&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/object-fit-images/3.2.4/ofi.min.js"&gt;&lt;/script&gt;
--->
-
-
-
 
 
 <style>
 
 
     .jumbotron {
-        padding-top: 12%;
+        padding-top: 8%;
         padding-bottom: 12%;
         position:relative;
         overflow:hidden;

@@ -17,11 +17,12 @@ class Transaction extends Model
     }
 
     public function getTotalAttribute(){
-        $items = $this->transactionDetails;
+        $transactionDetails = $this->transactionDetails;
 
         $total = 0;
-        foreach ($items as $item){
-            $total = $total + $item->quantity;
+        foreach ($transactionDetails as $transactionDetail){
+            $product = $transactionDetail->product;
+            $total += $transactionDetail->quantity * $product->price;
         }
 
         return $total;
