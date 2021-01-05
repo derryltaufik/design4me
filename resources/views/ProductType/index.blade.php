@@ -12,34 +12,30 @@
 
 
             @foreach($productTypes as $productType)
-                @if($loop->index %4 == 0)
-                    <div class="card-deck">
-                        @endif
 
-                        @php
-                            $design = null;
-                        @endphp
 
-                        <div class="card shadow m-3" style="width: 19.5rem;">
-                            <h2 class="py-4 card-title text-center">{{$productType->name}}</h2>
+                @php
+                    $design = null;
+                @endphp
 
-                            <x-design-shirt :design="$design" :productType="$productType">
+                <div class="card shadow m-3" style="width: 19.5rem;">
+                    <h2 class="py-4 card-title text-center">{{$productType->name}}</h2>
 
-                            </x-design-shirt>
+                    <x-design-shirt :design="$design" :productType="$productType">
 
-                            <div class="card-body">
-                                <p class="card-text">{{$productType->description}}</p>
-                                <p class="card-text">Base Price:
-                                    Rp{{number_format($productType->base_price,0,',','.')}}</p>
-                            </div>
-                            <div class="card-footer">
-                                <a href="{{route('products.create',$productType)}}" class="btn btn-primary btn-block">Create
-                                    Design</a>
-                            </div>
-                        </div>
-                        @if($loop->index %4 == 0)
+                    </x-design-shirt>
+
+                    <div class="card-body">
+                        <p class="card-text">{{$productType->description}}</p>
+                        <p class="card-text">Base Price:
+                            Rp{{number_format($productType->base_price,0,',','.')}}</p>
                     </div>
-                @endif
+                    <div class="card-footer">
+                        <a href="{{route('products.create',$productType)}}" class="btn btn-primary btn-block">Create
+                            Design</a>
+                    </div>
+                </div>
+
             @endforeach
 
         </div>

@@ -21,36 +21,33 @@
 
 
                 @foreach($products as $product)
-                    @if($loop->index %4 == 0)
-                        <div class="card-deck">
-                            @endif
 
-                            @php
-                                $design = $product->design;
-                                $productType = $product->productType;
-                            @endphp
 
-                            <div class="card shadow m-3" style="width: 19.5rem;">
-                                <h2 class="py-4 card-title text-center">{{$design->name}}</h2>
 
-                                <x-design-shirt :design="$design" :productType="$productType">
+                    @php
+                        $design = $product->design;
+                        $productType = $product->productType;
+                    @endphp
 
-                                </x-design-shirt>
+                    <div class="card shadow m-3" style="width: 19.5rem;">
+                        <h2 class="py-4 card-title text-center">{{$design->name}}</h2>
 
-                                <div class="card-body">
-                                    <p class="card-text">{{$design->description}}</p>
+                        <x-design-shirt :design="$design" :productType="$productType">
 
-                                </div>
+                        </x-design-shirt>
 
-                                <div class="card-footer">
-                                    <a href="{{route('products.show',$product)}}"
-                                       class="btn btn-primary btn-block">View
-                                        Design</a>
-                                </div>
-                            </div>
-                            @if($loop->index %4 == 0)
+                        <div class="card-body">
+                            <p class="card-text">{{$design->description}}</p>
+
                         </div>
-                    @endif
+
+                        <div class="card-footer">
+                            <a href="{{route('products.show',$product)}}"
+                               class="btn btn-primary btn-block">View
+                                Design</a>
+                        </div>
+                    </div>
+
                 @endforeach
             </div>
         </div>
